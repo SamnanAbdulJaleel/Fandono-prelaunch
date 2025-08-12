@@ -1,7 +1,6 @@
 
 ---
 
-```markdown
 # 🌸 Fandono — Coming Soon Page
 
 > **A live "Coming Soon" page for Fandono**, a sub-brand anime niche website under **Myprus**, created as part of their main brand development process.  
@@ -68,8 +67,6 @@ Fandono-Coming-Soon/
 1. **Clone or Download**
    ```bash
    git clone https://github.com/yourusername/fandono-coming-soon.git
-````
-
 2. **Host on Any Static Server**
 
    * You can use GitHub Pages, Netlify, or Vercel.
@@ -104,4 +101,3 @@ Rights are owned by **Myprus**. Public reproduction, resale, or redistribution w
 ---
 
 **© Fandono • A Myprus Subbrand**
-s
