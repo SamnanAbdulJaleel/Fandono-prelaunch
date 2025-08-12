@@ -66,7 +66,7 @@ Fandono-Coming-Soon/
 
 1. **Clone or Download**
    ```bash
-   git clone https://github.com/yourusername/fandono-coming-soon.git
+   git clone https://github.com/SamnanAbdulJaleel/fandono-coming-soon.git
 2. **Host on Any Static Server**
 
    * You can use GitHub Pages, Netlify, or Vercel.
