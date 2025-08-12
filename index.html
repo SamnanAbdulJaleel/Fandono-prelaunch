@@ -1,0 +1,355 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
+  <title>Coming Soon — Fandono</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Permanent+Marker&display=swap" rel="stylesheet">
+
+  <style>
+    :root {
+      --accent1: #ff9a2b;
+      --accent2: #ff5400;
+    }
+
+    /* box-sizing for safer layout calculations */
+    *, *::before, *::after { box-sizing: border-box; }
+
+    html, body {
+      height: 100%;
+      margin: 0;
+      padding: 0;
+      background: #000;
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+      overflow: hidden; /* no scroll */
+    }
+
+    .stage {
+      position: relative;
+      /* keep legacy 100vh, then override with 100dvh when available */
+      height: 100vh;
+      height: 100dvh;
+      width: 100vw;
+      overflow: hidden;
+      color: #fff;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      /* respect safe-area on devices with home indicator / notch */
+      padding-top: env(safe-area-inset-top, 0px);
+      padding-bottom: env(safe-area-inset-bottom, 0px);
+    }
+
+    .bg {
+      position: absolute; inset: 0;
+      background-size: cover;
+      background-position: center;
+      animation: bgZoom 14s ease-in-out infinite alternate;
+      z-index: 0;
+    }
+    @keyframes bgZoom {
+      0% { transform: scale(1) }
+      100% { transform: scale(1.05) }
+    }
+
+    .slant-top, .slant-bottom {
+      position: absolute;
+      left: -20vw;
+      right: -20vw;
+      height: 8vh;
+      background: #000;
+      z-index: 50;
+      clip-path: inset(0); /* prevent visual spill */
+    }
+    .slant-top {
+      top: 0;
+      transform: skewY(-6deg) translateY(-50%);
+    }
+    .slant-bottom {
+      bottom: 0;
+      transform: skewY(6deg) translateY(50%);
+    }
+
+    .content {
+      position: relative;
+      z-index: 60;
+      flex: 1;
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      justify-content: space-between;
+      padding: 4vh 6vw;
+      min-height: 0; /* prevents flex overflow on mobile */
+    }
+
+    .title-block { max-width: 56%; padding-left: 2vw; }
+    .title {
+      font-family: 'Permanent Marker', cursive;
+      font-size: 6.2vw;
+      line-height: 0.9;
+      color: #fff;
+      text-shadow: -3px 3px 0 rgba(0,0,0,0.6), 0 6px 30px rgba(0,0,0,0.6);
+      margin: 0;
+    }
+
+    .ninja-wrap {
+      flex: 0 0 auto;
+      width: 36vw;
+      max-width: 560px;
+      display: flex;
+      align-items: flex-end;
+      justify-content: center;
+    }
+    .ninja {
+      width: 100%;
+      max-width: 560px;
+      height: auto;
+      animation: breath 4s ease-in-out infinite;
+    }
+    @keyframes breath {
+      0%, 100% { transform: translateY(0) }
+      50% { transform: translateY(-6px) }
+    }
+
+    .loading-wrap {
+      position: absolute;
+      left: 50%;
+      /* leave room for safe-area bottom */
+      bottom: calc(12vh + env(safe-area-inset-bottom, 0px));
+      transform: translateX(-50%);
+      z-index: 70;
+      text-align: center;
+    }
+    .loading-text {
+      font-family: 'Permanent Marker', cursive;
+      font-size: 2.2rem;
+      letter-spacing: 2px;
+      text-align: center;
+      color: var(--accent1);
+      text-shadow:
+        0 0 10px var(--accent2),
+        0 0 20px var(--accent1),
+        0 0 40px var(--accent2);
+      animation: pulse 1.5s infinite ease-in-out, glowShift 3s infinite alternate, bounce 1.8s infinite;
+    }
+    @keyframes pulse { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.05); } }
+    @keyframes glowShift {
+      0% { text-shadow: 0 0 10px var(--accent2), 0 0 20px var(--accent1), 0 0 40px var(--accent2); }
+      100% { text-shadow: 0 0 15px var(--accent1), 0 0 30px var(--accent2), 0 0 50px var(--accent1); }
+    }
+    @keyframes bounce { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-4px); } }
+
+    .resource-text {
+      margin-top: 0.8rem;
+      font-family: 'Permanent Marker', cursive;
+      color: rgba(255,255,255,0.92);
+      font-size: 1.05rem;
+      text-align: center;
+      text-shadow:
+        0 0 4px rgba(0,0,0,0.6),
+        0 0 6px rgba(255,255,255,0.25);
+      opacity: 0;
+      animation: fadeIn 1.8s ease forwards;
+      animation-delay: 1.5s;
+      max-width: 90%;
+      margin-left: auto;
+      margin-right: auto;
+      line-height: 1.4;
+    }
+    @keyframes fadeIn { to { opacity: 1; } }
+
+    .copyright {
+      position: absolute;
+      right: 18px;
+      bottom: calc(6px + env(safe-area-inset-bottom, 0px));
+      z-index: 80;
+      color: rgba(255,255,255,0.5);
+      font-size: 11px;
+    }
+
+    #particles {
+      position: absolute;
+      inset: 0;
+      z-index: 55;
+      pointer-events: none;
+    }
+
+    #music-toggle {
+      position: absolute;
+      top: calc(15px + env(safe-area-inset-top, 0px));
+      right: 15px;
+      z-index: 100;
+      background: rgba(0,0,0,0.4);
+      border-radius: 50%;
+      padding: 6px;
+      cursor: pointer;
+      transition: transform 0.3s ease;
+    }
+    #music-toggle img {
+      width: 28px;
+      height: 28px;
+      display: block;
+    }
+    @keyframes rotateIcon {
+      from { transform: rotate(0deg); }
+      to { transform: rotate(360deg); }
+    }
+    #music-toggle.rotating img {
+      animation: rotateIcon 2s linear infinite;
+    }
+
+    /* MOBILE tweaks - keep layout same but nudge title up slightly */
+    @media (max-width: 560px) {
+      .content {
+        flex-direction: column;
+        align-items: center;
+        justify-content: center; /* center vertically */
+        padding: 0;
+        /* fill inside safe area - stage already has safe-area padding */
+        height: 100%;
+        text-align: center;
+        transform: translateY(-4vh); /* small upward nudge you requested */
+      }
+
+      .title {
+        font-size: 14vw;
+        margin: 0;
+      }
+      .title-block {
+        max-width: 100%;
+        padding-left: 0;
+      }
+      .ninja-wrap { display: none; }
+
+      /* push loading text a little higher on mobile and respect safe area bottom */
+      .loading-wrap {
+        bottom: calc(14vh + env(safe-area-inset-bottom, 0px));
+      }
+
+      .resource-text {
+        font-size: 1rem;
+        line-height: 1.4;
+        max-width: 320px;
+      }
+
+      .slant-top, .slant-bottom {
+        height: 15vh;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="stage" id="stage">
+    <div id="bg" class="bg" style="background-image:url('assests/bg.jpg');"></div>
+    <canvas id="particles"></canvas>
+    <div class="slant-top"></div>
+    <div class="slant-bottom"></div>
+
+    <div class="content">
+      <div class="title-block"><h1 class="title">Coming Soon!</h1></div>
+      <div class="ninja-wrap"><img src="assests/ninja1.png" alt="ninja" class="ninja"></div>
+    </div>
+
+    <div class="loading-wrap">
+      <div class="loading-text">Loading...</div>
+      <div class="resource-text"><span>The stage is being set... heroes are gathering in the shadows.</span></div>
+    </div>
+
+    <div id="music-toggle"><img src="assests/romantic-music_9070197.png" alt="Toggle Music"></div>
+    <div class="copyright">© Fandono • Coming Soon</div>
+  </div>
+
+  <audio id="bg-music" src="assests/naruto_theme.mp3" loop></audio>
+
+  <script>
+    const music = document.getElementById('bg-music');
+    const toggleBtn = document.getElementById('music-toggle');
+
+    function playMusic() {
+      music.muted = false;
+      music.volume = 0.5;
+      music.play().then(() => {
+        toggleBtn.classList.add('rotating');
+      }).catch(() => {
+        document.addEventListener('click', enableOnClick, { once: true });
+        document.addEventListener('touchstart', enableOnClick, { once: true });
+      });
+    }
+
+    function enableOnClick() {
+      music.play();
+      toggleBtn.classList.add('rotating');
+    }
+
+    toggleBtn.addEventListener('click', () => {
+      if (music.paused) {
+        music.play();
+        toggleBtn.classList.add('rotating');
+      } else {
+        music.pause();
+        toggleBtn.classList.remove('rotating');
+      }
+    });
+
+    playMusic();
+  </script>
+
+  <script>
+    (function(){
+      const canvas = document.getElementById('particles');
+      const ctx = canvas.getContext('2d');
+      const stage = document.getElementById('stage');
+      let W = 0, H = 0;
+      const particles = [];
+
+      function rand(a,b) { return Math.random()*(b-a)+a; }
+      function makeParticle(){
+        return {
+          x: rand(0,W), y: rand(-H*0.2,H),
+          vy: rand(0.2,0.7), vx: rand(-0.25,0.25),
+          size: rand(1.5,6.5), life: rand(6000,14000),
+          t:0, alpha: rand(0.2,0.9),
+          color: Math.random()<0.6 ? '255,170,60' : '255,220,140'
+        }
+      }
+
+      // init a few particles
+      for(let i=0;i<28;i++) particles.push(makeParticle());
+
+      // resize canvas to match the stage visible area (accounts for safe-area)
+      function resizeCanvas(){
+        const rect = stage.getBoundingClientRect();
+        W = canvas.width = Math.max(1, Math.floor(rect.width));
+        H = canvas.height = Math.max(1, Math.floor(rect.height));
+      }
+
+      window.addEventListener('resize', resizeCanvas);
+      // also adjust after orientationchange
+      window.addEventListener('orientationchange', () => setTimeout(resizeCanvas, 120));
+
+      resizeCanvas();
+
+      function draw(){
+        ctx.clearRect(0,0,W,H);
+        if(Math.random() < 0.33 && particles.length < 60) particles.push(makeParticle());
+        for(let i=particles.length-1;i>=0;i--){
+          const p = particles[i];
+          p.t += 16;
+          p.x += p.vx * 16;
+          p.y += p.vy * 16;
+          ctx.globalAlpha = Math.max(0, p.alpha * (1 - p.t / p.life));
+          ctx.fillStyle = `rgba(${p.color},${ctx.globalAlpha})`;
+          ctx.beginPath();
+          ctx.ellipse(p.x, p.y, p.size*0.9, p.size*0.6, 0, 0, Math.PI*2);
+          ctx.fill();
+          ctx.globalAlpha = 1;
+          if(p.y > H + 30 || p.t > p.life) particles.splice(i,1);
+        }
+        requestAnimationFrame(draw);
+      }
+      requestAnimationFrame(draw);
+    })();
+  </script>
+</body>
+</html>
